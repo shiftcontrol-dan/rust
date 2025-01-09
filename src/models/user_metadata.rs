@@ -25,6 +25,10 @@ pub struct UserMetadata {
     pub email_confirmed: bool,
     #[serde(rename = "has_password")]
     pub has_password: bool,
+    #[serde(rename = "user_role")]
+    pub role_in_org: Option<String>,
+    #[serde(rename = "additional_roles_in_org")]
+    pub additional_roles_in_org: Option<Vec<String>>,
     #[serde(rename = "username", skip_serializing_if = "Option::is_none")]
     pub username: Option<String>,
     #[serde(rename = "first_name", skip_serializing_if = "Option::is_none")]
@@ -60,6 +64,8 @@ impl UserMetadata {
             email,
             email_confirmed,
             has_password,
+            role_in_org: None,
+            additional_roles_in_org: None,
             username: None,
             first_name: None,
             last_name: None,
