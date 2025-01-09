@@ -25,7 +25,7 @@ pub struct UserMetadata {
     pub email_confirmed: bool,
     #[serde(rename = "has_password")]
     pub has_password: bool,
-    #[serde(rename = "user_role")]
+    #[serde(rename = "role_in_org")]
     pub role_in_org: Option<String>,
     #[serde(rename = "additional_roles_in_org")]
     pub additional_roles_in_org: Option<Vec<String>>,
