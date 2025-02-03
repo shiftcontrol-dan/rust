@@ -43,7 +43,6 @@ where
         }
     }
 }
-
 #[async_trait]
 impl<S> FromRequestParts<S> for UserOrApiKey
 where
@@ -204,7 +203,6 @@ impl Default for MultiAuthConfig {
         }
     }
 }
-
 impl IntoResponse for UnauthorizedError {
     fn into_response(self) -> Response {
         (StatusCode::UNAUTHORIZED, "Unauthorized").into_response()

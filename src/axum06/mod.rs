@@ -44,7 +44,6 @@ where
         }
     }
 }
-
 #[async_trait]
 impl<S> FromRequestParts<S> for UserOrApiKey
 where
@@ -89,13 +88,18 @@ where
             .to_owned();
 
         // 2. If that fails, try personal key if allowed
-        if config.allow_personal_key {
+        if config.allow_user_key || config.allow_personal_key {
             match auth.api_key().validate_personal_api_key(ValidateApiKeyParams {
                 api_key_token: maybe_api_key.clone(),
             }).await
             {
                 Ok(pk) => {
-                    multi.personal_key_info = Some(pk);
+                    if config.allow_user_key {
+                        multi.user_key_info = Some(pk.clone());
+                    }
+                    if config.allow_personal_key {
+                        multi.personal_key_info = Some(pk);
+                    }
                     return Ok(multi);
                 }
                 Err(_) => {
@@ -193,6 +197,7 @@ where
 
 #[derive(Clone, Debug)]
 pub struct MultiAuthConfig {
+    pub allow_user_key: bool,
     pub allow_personal_key: bool,
     pub allow_org_key: bool,
 }
@@ -200,12 +205,12 @@ pub struct MultiAuthConfig {
 impl Default for MultiAuthConfig {
     fn default() -> Self {
         MultiAuthConfig {
+            allow_user_key: false,
             allow_personal_key: false,
             allow_org_key: false,
         }
     }
 }
-
 impl IntoResponse for UnauthorizedError {
     fn into_response(self) -> Response {
         (StatusCode::UNAUTHORIZED, "Unauthorized").into_response()
