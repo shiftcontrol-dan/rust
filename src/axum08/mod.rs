@@ -192,14 +192,14 @@ where
 
 #[derive(Clone, Debug)]
 pub struct MultiAuthConfig {
-    pub allow_user_key: bool,
+    pub allow_personal_key: bool,
     pub allow_org_key: bool,
 }
 
 impl Default for MultiAuthConfig {
     fn default() -> Self {
         MultiAuthConfig {
-            allow_user_key: false,
+            allow_personal_key: false,
             allow_org_key: false,
         }
     }
