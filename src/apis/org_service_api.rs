@@ -644,6 +644,11 @@ pub async fn fetch_saml_sp_metadata(
         local_var_configuration.auth_hostname.to_owned(),
     );
 
+    local_var_req_builder = local_var_req_builder.header(
+        AUTH_HOSTNAME_HEADER,
+        local_var_configuration.auth_hostname.to_owned(),
+    );
+
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
 
@@ -692,6 +697,11 @@ pub async fn set_saml_idp_metadata(
     );
     local_var_req_builder = local_var_req_builder.json(&set_idp_request);
 
+    local_var_req_builder = local_var_req_builder.header(
+        AUTH_HOSTNAME_HEADER,
+        local_var_configuration.auth_hostname.to_owned(),
+    );
+
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
 
@@ -739,6 +749,11 @@ pub async fn saml_go_live(
         local_var_configuration.auth_hostname.to_owned(),
     );
 
+    local_var_req_builder = local_var_req_builder.header(
+        AUTH_HOSTNAME_HEADER,
+        local_var_configuration.auth_hostname.to_owned(),
+    );
+
     let local_var_req = local_var_req_builder.build()?;
     let local_var_resp = local_var_client.execute(local_var_req).await?;
 
@@ -781,6 +796,11 @@ pub async fn delete_saml_connection(
     if let Some(ref local_var_token) = local_var_configuration.bearer_access_token {
         local_var_req_builder = local_var_req_builder.bearer_auth(local_var_token);
     };
+    local_var_req_builder = local_var_req_builder.header(
+        AUTH_HOSTNAME_HEADER,
+        local_var_configuration.auth_hostname.to_owned(),
+    );
+
     local_var_req_builder = local_var_req_builder.header(
         AUTH_HOSTNAME_HEADER,
         local_var_configuration.auth_hostname.to_owned(),
