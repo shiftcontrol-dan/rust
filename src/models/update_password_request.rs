@@ -11,7 +11,10 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct UpdatePasswordRequest {
     #[serde(rename = "password")]
     pub password: String,

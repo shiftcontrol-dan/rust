@@ -1,4 +1,7 @@
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct FetchApiKeysPagedResponse {
     #[serde(rename = "api_keys")]
     pub api_keys: Vec<crate::models::FetchApiKeyResponse>,

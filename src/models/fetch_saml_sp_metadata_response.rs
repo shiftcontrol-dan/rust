@@ -1,4 +1,7 @@
-#[derive(Clone, Debug, PartialEq, Default, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Deserialize, JsonSchema)]
 pub struct FetchSamlSpMetadataResponse {
     #[serde(rename = "entity_id")]
     pub entity_id: String,

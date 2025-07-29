@@ -1,3 +1,5 @@
+use std::convert::TryFrom;
+use schemars::JsonSchema;
 use std::collections::hash_map::{Keys, Values};
 use std::collections::HashMap;
 use serde_json::Value;
@@ -18,7 +20,7 @@ pub struct ValidateApiKeyResponse {
     pub org_id: Option<String>,
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
 pub struct ValidatePersonalApiKeyResponse {
     pub metadata: Option<serde_json::Value>,
     pub user: UserMetadata,
@@ -106,7 +108,7 @@ impl ValidatePersonalApiKeyResponse {
     }
 }
 
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
 pub struct ValidateOrgApiKeyResponse {
     pub metadata: Option<serde_json::Value>,
     pub user: Option<UserMetadata>,
@@ -137,7 +139,7 @@ impl ValidateOrgApiKeyResponse {
         }
     }
 }
-#[derive(Clone, Debug, PartialEq, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Deserialize, JsonSchema)]
 pub struct OrgMetadata {
     pub org_id: Uuid,
     pub org_name: String,

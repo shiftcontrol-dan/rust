@@ -1,21 +1,22 @@
+use std::convert::TryFrom;
 use reqwest;
-
+use schemars::JsonSchema;
 use super::{configuration, Error};
 use crate::{apis::ResponseContent, propelauth::auth::AUTH_HOSTNAME_HEADER};
 
 /// struct for passing parameters to the method [`create_access_token`]
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, JsonSchema)]
 pub struct CreateAccessTokenParams {
     pub create_access_token_request: crate::models::CreateAccessTokenRequest,
 }
 
-#[derive(Clone, Debug, Default)]
+#[derive(Clone, Debug, Default, JsonSchema)]
 pub struct CreateAccessTokenV2Params {
     pub create_access_token_request: crate::models::CreateAccessTokenV2Request,
 }
 
 /// struct for typed errors of method [`create_access_token`]
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, JsonSchema)]
 #[serde(untagged)]
 pub enum CreateAccessTokenError {
     Status400(crate::models::BadCreateAccessTokenError),

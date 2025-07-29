@@ -1,3 +1,5 @@
+use std::convert::TryFrom;
+use schemars::JsonSchema;
 use std::collections::hash_map::{Keys, Values};
 use std::collections::HashMap;
 
@@ -7,7 +9,7 @@ use crate::models::validate_api_key_response::{ValidateOrgApiKeyResponse, Valida
 use crate::propelauth::errors::DetailedForbiddenError;
 use crate::propelauth::options::{RequiredOrg, UserRequirementsInOrg};
 
-#[derive(Debug, Deserialize, Clone, PartialEq, Default)]
+#[derive(Debug, Deserialize, Clone, PartialEq, Default, JsonSchema)]
 pub struct LoginMethodForAccessToken {
     pub login_method: String,
     #[serde(default)]
@@ -16,7 +18,7 @@ pub struct LoginMethodForAccessToken {
     pub org_id: Option<String>,
 }
 
-#[derive(Debug, Serialize, Deserialize, Hash, Eq, PartialEq, Copy, Clone)]
+#[derive(Debug, Serialize, Deserialize, Hash, Eq, PartialEq, Copy, Clone, JsonSchema)]
 #[serde(rename_all = "snake_case")]
 pub enum SocialLoginType {
     Google,
@@ -47,7 +49,7 @@ impl std::str::FromStr for SocialLoginType {
     }
 }
 
-#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq, Eq)]
+#[derive(Serialize, Deserialize, Copy, Clone, Debug, PartialEq, Eq, JsonSchema)]
 pub enum IdentityProvider {
     Google,
     Rippling,
@@ -77,7 +79,7 @@ impl std::str::FromStr for IdentityProvider {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Default)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Default, JsonSchema)]
 pub enum LoginMethod {
     Password,
     MagicLink,
@@ -117,7 +119,7 @@ impl Into<LoginMethod> for LoginMethodForAccessToken {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Default)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Default, JsonSchema)]
 pub struct User {
     pub user_id: String,
 
@@ -236,7 +238,7 @@ impl User {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonSchema)]
 pub struct OrgMemberInfo {
     pub org_id: String,
     pub org_name: String,
@@ -249,7 +251,7 @@ pub struct OrgMemberInfo {
     pub additional_roles: Vec<String>,
 }
 
-#[derive(Debug, Default, Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Debug, Default, Serialize, Deserialize, Clone, PartialEq, JsonSchema)]
 pub enum OrgRoleStructure {
     #[default]
     #[serde(rename = "single_role_in_hierarchy")]
@@ -300,14 +302,14 @@ impl OrgMemberInfo {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[derive(Debug, Serialize, Deserialize, Clone, PartialEq, JsonSchema)]
 pub struct UserAndOrgMemberInfo {
     pub user: User,
     pub org_member_info: OrgMemberInfo,
 }
 
 
-#[derive(Debug)]
+#[derive(Debug, JsonSchema)]
 pub struct UserOrApiKey {
     pub user: Option<User>,
     pub personal_key_info: Option<ValidatePersonalApiKeyResponse>,

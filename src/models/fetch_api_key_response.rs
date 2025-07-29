@@ -1,4 +1,7 @@
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct FetchApiKeyResponse {
     pub api_key_id: String,
     pub created_at: i32,

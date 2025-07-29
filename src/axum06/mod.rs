@@ -129,7 +129,7 @@ where
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, JsonSchema)]
 pub struct PropelAuthLayer {
     auth: Arc<PropelAuth>,
     auth_config: MultiAuthConfig,
@@ -163,7 +163,7 @@ impl<S> Layer<S> for PropelAuthLayer {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, JsonSchema)]
 pub struct PropelAuthMiddleware<S> {
     inner: S,
     auth: Arc<PropelAuth>,
@@ -195,7 +195,7 @@ where
     }
 }
 
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, JsonSchema)]
 pub struct MultiAuthConfig {
     pub allow_personal_key: bool,
     pub allow_personal_key: bool,

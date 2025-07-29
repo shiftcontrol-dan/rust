@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use crate::models::AuthTokenVerificationMetadata;
 
 pub struct AuthOptionsWithTokenVerification {
@@ -19,13 +20,13 @@ pub struct AuthOptions {
     pub api_key: String,
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, JsonSchema)]
 pub enum RequiredOrg<'a> {
     OrgId(&'a str),
     OrgName(&'a str),
 }
 
-#[derive(Debug, Clone, PartialEq)]
+#[derive(Debug, Clone, PartialEq, JsonSchema)]
 pub enum UserRequirementsInOrg<'a> {
     None,
     IsRole(&'a str),

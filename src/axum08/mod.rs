@@ -1,3 +1,4 @@
+use std::convert::TryFrom;
 use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
@@ -10,9 +11,8 @@ use axum_08::http::StatusCode;
 use axum_08::response::IntoResponse;
 use axum_08::{body::Body, http::Request, response::Response};
 use tower::{Layer, Service};
+use schemars::JsonSchema;
 use crate::apis::api_key_service_api::ValidateApiKeyParams;
-use crate::apis::api_key_service_api::ValidateApiKeyParams;
-use crate::models::validate_api_key_response::{ValidateOrgApiKeyResponse, ValidatePersonalApiKeyResponse};
 use crate::propelauth::auth::PropelAuth;
 use crate::propelauth::errors::{UnauthorizedError, UnauthorizedOrForbiddenError};
 use crate::propelauth::token_models::{User, UserOrApiKey};
@@ -190,22 +190,7 @@ where
     }
 }
 
-#[derive(Clone, Debug)]
-pub struct MultiAuthConfig {
-    pub allow_personal_key: bool,
-    pub allow_org_key: bool,
-}
-
-impl Default for MultiAuthConfig {
-    fn default() -> Self {
-        MultiAuthConfig {
-            allow_personal_key: false,
-            allow_org_key: false,
-        }
-    }
-}
-
-#[derive(Clone, Debug)]
+#[derive(Clone, Debug, JsonSchema)]
 pub struct MultiAuthConfig {
     pub allow_personal_key: bool,
     pub allow_org_key: bool,

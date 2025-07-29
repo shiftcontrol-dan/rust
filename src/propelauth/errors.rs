@@ -1,3 +1,4 @@
+use schemars::JsonSchema;
 use crate::models::{
     BadCreateAccessTokenError, BadCreateMagicLinkRequest, BadCreateOrgRequest,
     BadCreateUserRequest, BadFetchOrgQuery, BadFetchUsersByQuery, BadFetchUsersInOrgQuery,
@@ -6,7 +7,7 @@ use crate::models::{
 };
 use thiserror::Error;
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum InitializationError {
     #[error("Invalid auth URL")]
     InvalidAuthUrl,
@@ -21,7 +22,7 @@ pub enum InitializationError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum ErrorsWithNotFound {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -36,7 +37,7 @@ pub enum ErrorsWithNotFound {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Clone, JsonSchema)]
 pub enum BatchFetchError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -51,7 +52,7 @@ pub enum BatchFetchError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum FetchByQueryError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -66,7 +67,7 @@ pub enum FetchByQueryError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum CreateUserError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -81,7 +82,7 @@ pub enum CreateUserError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum UpdateUserMetadataError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -99,7 +100,7 @@ pub enum UpdateUserMetadataError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum UpdateUserEmailError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -117,7 +118,7 @@ pub enum UpdateUserEmailError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum ResendEmailConfirmationError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -135,7 +136,7 @@ pub enum ResendEmailConfirmationError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum UpdatePasswordError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -153,7 +154,7 @@ pub enum UpdatePasswordError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum ClearPasswordError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -168,7 +169,7 @@ pub enum ClearPasswordError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum MigrateUserError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -183,7 +184,7 @@ pub enum MigrateUserError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum MigrateUserPasswordError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -198,7 +199,7 @@ pub enum MigrateUserPasswordError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum CreateMagicLinkError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -213,7 +214,7 @@ pub enum CreateMagicLinkError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum UpdateOrgError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -231,7 +232,7 @@ pub enum UpdateOrgError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum SubscribeOrgToRoleMappingError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -249,7 +250,7 @@ pub enum SubscribeOrgToRoleMappingError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum InviteUserToOrgError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -267,7 +268,7 @@ pub enum InviteUserToOrgError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum CreateOrgError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -282,7 +283,7 @@ pub enum CreateOrgError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum OrgMissingOrRoleError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -300,7 +301,7 @@ pub enum OrgMissingOrRoleError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum FetchUsersInOrgError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -315,7 +316,7 @@ pub enum FetchUsersInOrgError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum FetchOrgsByQueryError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -330,7 +331,7 @@ pub enum FetchOrgsByQueryError {
     UnexpectedException,
 }
 
-#[derive(Error, Debug, PartialEq, Clone)]
+#[derive(Error, Debug, PartialEq, Clone, JsonSchema)]
 pub enum CreateAccessTokenError {
     #[error("Invalid API Key")]
     InvalidApiKey,
@@ -348,7 +349,7 @@ pub enum CreateAccessTokenError {
     BadRequest(BadCreateAccessTokenError),
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum DetailedAuthError {
     #[error("Invalid public key for decoding the JWT - make sure it's formatted correctly")]
     InvalidPublicKey,
@@ -360,7 +361,7 @@ pub enum DetailedAuthError {
     IncorrectlyFormattedHeader,
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum UnauthorizedError {
     #[error("Unauthorized")]
     Unauthorized(DetailedAuthError),
@@ -372,7 +373,7 @@ impl From<DetailedAuthError> for UnauthorizedError {
     }
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum DetailedForbiddenError {
     #[error("User is not a member of that organization")]
     UserIsNotInOrg,
@@ -384,7 +385,7 @@ pub enum DetailedForbiddenError {
     UserMissingPermission,
 }
 
-#[derive(Error, Debug, Eq, PartialEq, Copy, Clone)]
+#[derive(Error, Debug, Eq, PartialEq, Copy, Clone, JsonSchema)]
 pub enum UnauthorizedOrForbiddenError {
     #[error("Unauthorized")]
     Unauthorized(DetailedAuthError),

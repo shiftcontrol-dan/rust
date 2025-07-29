@@ -1,5 +1,7 @@
+use std::convert::TryFrom;
+use schemars::JsonSchema;
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct BadCreateAccessTokenError {
     #[serde(rename = "active_org_id", skip_serializing_if = "Option::is_none")]
     pub active_org_id: Option<Vec<String>>,

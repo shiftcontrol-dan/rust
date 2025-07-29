@@ -1,4 +1,7 @@
-#[derive(Clone, Debug, PartialEq, Serialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Serialize, JsonSchema)]
 pub struct SetSamlIdpMetadataRequest {
     #[serde(rename = "org_id")]
     pub org_id: String,
@@ -12,7 +15,7 @@ pub struct SetSamlIdpMetadataRequest {
     pub provider: SamlIdpProvider,
 }
 
-#[derive(Clone, Debug, PartialEq, Serialize)]
+#[derive(Clone, Debug, PartialEq, Serialize, JsonSchema)]
 pub enum SamlIdpProvider {
     Google,
     Rippling,

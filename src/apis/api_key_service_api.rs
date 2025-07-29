@@ -4,15 +4,16 @@
  * For consistency with the rest of this codebase, this file matches the output of the terrible openapi generator.
  */
 
+use std::convert::TryFrom;
 use hex;
 use reqwest;
-
+use schemars::JsonSchema;
 use crate::{apis::ResponseContent, propelauth::auth::AUTH_HOSTNAME_HEADER};
 
 use super::{configuration, Error};
 
 /// struct for passing parameters to the method [`fetch_api_keys`, `fetch_archived_api_keys`]
-#[derive(Clone, Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Serialize, JsonSchema)]
 pub struct ApiKeyQueryParams {
     pub user_id: Option<String>,
     pub user_email: Option<String>,
@@ -22,7 +23,7 @@ pub struct ApiKeyQueryParams {
 }
 
 /// struct for passing parameters to the method [`create_api_key`]
-#[derive(Clone, Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Serialize, JsonSchema)]
 pub struct CreateApiKeyParams {
     pub expires_at_seconds: Option<i64>,
     pub metadata: Option<serde_json::Value>,
@@ -31,7 +32,7 @@ pub struct CreateApiKeyParams {
 }
 
 /// struct for passing parameters to the method [`update_api_key`]
-#[derive(Clone, Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Serialize, JsonSchema)]
 pub struct UpdateApiKeyParams {
     pub expires_at_seconds: Option<i64>,
     pub metadata: Option<serde_json::Value>,
@@ -39,13 +40,13 @@ pub struct UpdateApiKeyParams {
 }
 
 /// struct for passing parameters to the method [`validate_api_key`]
-#[derive(Clone, Debug, Default, Serialize)]
+#[derive(Clone, Debug, Default, Serialize, JsonSchema)]
 pub struct ValidateApiKeyParams {
     pub api_key_token: String,
 }
 
 // struct for typed errors on the api keys service
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, JsonSchema)]
 #[serde(untagged)]
 pub enum ApiKeyError {
     BadRequest(crate::models::BadUpdateOrgRequest),
@@ -66,7 +67,7 @@ pub enum ApiKeyError {
     UnexpectedExceptionWithSDK,
 }
 
-#[derive(Debug, Clone, Deserialize)]
+#[derive(Debug, Clone, Deserialize, JsonSchema)]
 #[serde(untagged)]
 pub enum ApiKeyValidationErrorResponse {
     InvalidEndUserApiKey {

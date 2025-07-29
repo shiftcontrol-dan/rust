@@ -11,7 +11,10 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct BadUpdatePasswordRequest {
     #[serde(rename = "password", skip_serializing_if = "Option::is_none")]
     pub password: Option<Vec<String>>,

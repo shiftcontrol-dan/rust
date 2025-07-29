@@ -11,7 +11,10 @@
 
 
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct BadUpdateUserEmailRequest {
     #[serde(rename = "new_email", skip_serializing_if = "Option::is_none")]
     pub new_email: Option<Vec<String>>,

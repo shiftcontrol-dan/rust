@@ -1,4 +1,7 @@
-#[derive(Deserialize, Debug)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Deserialize, Debug, JsonSchema)]
 pub struct FetchPendingInvitesResponse {
     #[serde(rename = "total_invites")]
     pub total_invites: i64,
@@ -12,7 +15,7 @@ pub struct FetchPendingInvitesResponse {
     pub invites: Vec<PendingInviteResponse>,
 }
 
-#[derive(Deserialize, Debug)]
+#[derive(Deserialize, Debug, JsonSchema)]
 pub struct PendingInviteResponse {
     #[serde(rename = "invitee_email")]
     pub invitee_email: String,

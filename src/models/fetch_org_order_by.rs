@@ -9,8 +9,10 @@
  */
 
 
+use schemars::JsonSchema;
+
 /// 
-#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize)]
+#[derive(Clone, Copy, Debug, Eq, PartialEq, Ord, PartialOrd, Hash, Serialize, Deserialize, JsonSchema)]
 pub enum FetchOrgOrderBy {
     #[serde(rename = "CREATED_AT_ASC")]
     CreatedAtAsc,

@@ -11,11 +11,13 @@
 
 
 
+use std::convert::TryFrom;
+use schemars::JsonSchema;
 use std::collections::HashMap;
 
 use serde_json::Value;
 
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct UpdateMetadataRequest {
     #[serde(rename = "username", skip_serializing_if = "Option::is_none")]
     pub username: Option<String>,

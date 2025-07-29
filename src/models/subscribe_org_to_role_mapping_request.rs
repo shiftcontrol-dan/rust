@@ -1,4 +1,7 @@
-#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+use std::convert::TryFrom;
+use schemars::JsonSchema;
+
+#[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize, JsonSchema)]
 pub struct SubscribeOrgToRoleMappingRequest {
     #[serde(rename = "custom_role_mapping_name")]
     pub custom_role_mapping_name: String,
