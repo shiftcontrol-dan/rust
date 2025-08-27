@@ -10,7 +10,11 @@
 
 use reqwest;
 
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 #[derive(Debug, Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct Configuration {
     pub base_path: String,
     pub auth_hostname: String,
@@ -26,6 +30,7 @@ pub struct Configuration {
 pub type BasicAuth = (String, Option<String>);
 
 #[derive(Debug, Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct ApiKey {
     pub prefix: Option<String>,
     pub key: String,

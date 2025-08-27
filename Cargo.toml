@@ -26,6 +26,10 @@ url = "^2.2"
 uuid = { version = "^1.0", features = ["serde"] }
 hex = "0.4.3"
 
+# Conditional schemars versions
+schemars09 = { package = "schemars", version = "0.9", optional = true, default-features = false, features = ["uuid1", "chrono04", "bigdecimal04"] }
+schemars = { version = "^1", optional = true, default-features = false, features = ["uuid1", "chrono04", "bigdecimal04"] }
+
 [dependencies.reqwest]
 version = "^0.12"
 default-features = false
@@ -44,6 +48,8 @@ axum07-extend-request = ["axum07"]
 axum08-extend-request = ["axum08"]
 actix4 = ["dep:actix-web"]
 __reqwest = ["reqwest/json", "reqwest/multipart"]
+schemars09 = ["dep:schemars09"]
+schemars-latest = ["dep:schemars"]
 
 [lib]
 doctest = false

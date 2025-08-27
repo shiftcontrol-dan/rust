@@ -11,7 +11,11 @@
 use serde_json::Value;
 use std::collections::HashMap;
 
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct CreateUserRequest {
     #[serde(rename = "email")]
     pub email: String,

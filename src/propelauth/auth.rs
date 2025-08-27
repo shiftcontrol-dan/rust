@@ -12,12 +12,16 @@ use crate::propelauth::org::OrgService;
 use crate::propelauth::token::TokenService;
 use crate::propelauth::user::UserService;
 
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 static BACKEND_API_BASE_URL: &str = "https://propelauth-api.com";
 pub(crate) static AUTH_HOSTNAME_HEADER: &str = "X-Propelauth-url";
 
 /// The main entrypoint of this library.
 /// All authentication, authorization and API requests starts from this struct
 #[derive(Debug, Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct PropelAuth {
     config: Configuration,
     token_verification_metadata: AuthTokenVerificationMetadata,

@@ -3,11 +3,18 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
 
 use crate::propelauth::errors::DetailedForbiddenError;
 use crate::propelauth::options::{RequiredOrg, UserRequirementsInOrg};
 
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 #[derive(Debug, Deserialize, Clone, PartialEq, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct LoginMethodForAccessToken {
     pub login_method: String,
     #[serde(default)]
@@ -118,6 +125,7 @@ impl Into<LoginMethod> for LoginMethodForAccessToken {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct User {
     pub user_id: String,
 
@@ -237,6 +245,7 @@ impl User {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct OrgMemberInfo {
     pub org_id: String,
     pub org_name: String,
@@ -301,6 +310,7 @@ impl OrgMemberInfo {
 }
 
 #[derive(Debug, Serialize, Deserialize, Clone, PartialEq)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct UserAndOrgMemberInfo {
     pub user: User,
     pub org_member_info: OrgMemberInfo,

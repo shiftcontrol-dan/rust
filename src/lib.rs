@@ -168,6 +168,14 @@ extern crate serde;
 extern crate serde_json;
 extern crate url;
 
+// Provide a stable schemars derive name via extern crate aliasing
+#[cfg(feature = "schemars09")]
+extern crate schemars09 as schemars;
+#[cfg(feature = "schemars-latest")]
+extern crate schemars as schemars;
+
+pub mod schema;
+
 pub mod apis;
 pub mod models;
 pub mod propelauth;

@@ -15,6 +15,9 @@ use crate::propelauth::auth::PropelAuth;
 use crate::propelauth::errors::{UnauthorizedError, UnauthorizedOrForbiddenError};
 use crate::propelauth::token_models::User;
 
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 impl<S> FromRequestParts<S> for User
 where
     S: Send + Sync,
@@ -49,6 +52,7 @@ pub trait ExtendRequest: Clone + Send + Sync + 'static {
 
 #[cfg(feature = "axum08-extend-request")]
 #[derive(Clone, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct NoopExtend;
 
 #[cfg(feature = "axum08-extend-request")]
@@ -58,6 +62,7 @@ impl ExtendRequest for NoopExtend {
 
 #[cfg(feature = "axum08-extend-request")]
 #[derive(Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct PropelAuthLayer<E = NoopExtend> {
     auth: Arc<PropelAuth>,
     extender: E,
@@ -65,6 +70,7 @@ pub struct PropelAuthLayer<E = NoopExtend> {
 
 #[cfg(not(feature = "axum08-extend-request"))]
 #[derive(Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct PropelAuthLayer {
     auth: Arc<PropelAuth>,
 }
@@ -131,6 +137,7 @@ impl<S> Layer<S> for PropelAuthLayer {
 
 #[cfg(feature = "axum08-extend-request")]
 #[derive(Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct PropelAuthMiddleware<S, E = NoopExtend> {
     inner: S,
     auth: Arc<PropelAuth>,
@@ -139,6 +146,7 @@ pub struct PropelAuthMiddleware<S, E = NoopExtend> {
 
 #[cfg(not(feature = "axum08-extend-request"))]
 #[derive(Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct PropelAuthMiddleware<S> {
     inner: S,
     auth: Arc<PropelAuth>,

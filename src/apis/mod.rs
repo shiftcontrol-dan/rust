@@ -1,7 +1,11 @@
 use std::error;
 use std::fmt;
 
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 #[derive(Debug, Clone)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct ResponseContent<T> {
     pub status: reqwest::StatusCode,
     pub content: String,
@@ -18,6 +22,7 @@ pub enum Error<T> {
 }
 
 #[derive(Debug, Serialize, Clone, Deserialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct UserFacingError {
     pub user_facing_error: String,
 }

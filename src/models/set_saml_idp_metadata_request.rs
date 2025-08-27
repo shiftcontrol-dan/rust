@@ -1,4 +1,8 @@
+#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+use schemars::JsonSchema;
+
 #[derive(Clone, Debug, PartialEq, Serialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct SetSamlIdpMetadataRequest {
     #[serde(rename = "org_id")]
     pub org_id: String,
