@@ -44,11 +44,44 @@ where
     }
 }
 
+#[cfg(feature = "axum06-extend-request")]
+pub trait ExtendRequest: Clone + Send + Sync + 'static {
+    fn extend(&self, req: &mut Request<Body>, auth: Arc<PropelAuth>);
+}
+
+#[cfg(feature = "axum06-extend-request")]
+#[derive(Clone, Default)]
+pub struct NoopExtend;
+
+#[cfg(feature = "axum06-extend-request")]
+impl ExtendRequest for NoopExtend {
+    fn extend(&self, _req: &mut Request<Body>, _auth: Arc<PropelAuth>) {}
+}
+
+#[cfg(feature = "axum06-extend-request")]
+#[derive(Clone)]
+pub struct PropelAuthLayer<E = NoopExtend> {
+    auth: Arc<PropelAuth>,
+    extender: E,
+}
+
+#[cfg(not(feature = "axum06-extend-request"))]
 #[derive(Clone)]
 pub struct PropelAuthLayer {
     auth: Arc<PropelAuth>,
 }
 
+#[cfg(feature = "axum06-extend-request")]
+impl PropelAuthLayer {
+    pub fn new(auth: PropelAuth) -> PropelAuthLayer {
+        PropelAuthLayer {
+            auth: Arc::new(auth),
+            extender: NoopExtend,
+        }
+    }
+}
+
+#[cfg(not(feature = "axum06-extend-request"))]
 impl PropelAuthLayer {
     pub fn new(auth: PropelAuth) -> PropelAuthLayer {
         PropelAuthLayer {
@@ -57,6 +90,36 @@ impl PropelAuthLayer {
     }
 }
 
+#[cfg(feature = "axum06-extend-request")]
+impl<E> PropelAuthLayer<E>
+where
+    E: ExtendRequest,
+{
+    pub fn with_extender(auth: PropelAuth, extender: E) -> PropelAuthLayer<E> {
+        PropelAuthLayer {
+            auth: Arc::new(auth),
+            extender,
+        }
+    }
+}
+
+#[cfg(feature = "axum06-extend-request")]
+impl<S, E> Layer<S> for PropelAuthLayer<E>
+where
+    E: ExtendRequest,
+{
+    type Service = PropelAuthMiddleware<S, E>;
+
+    fn layer(&self, inner: S) -> Self::Service {
+        PropelAuthMiddleware {
+            inner,
+            auth: self.auth.clone(),
+            extender: self.extender.clone(),
+        }
+    }
+}
+
+#[cfg(not(feature = "axum06-extend-request"))]
 impl<S> Layer<S> for PropelAuthLayer {
     type Service = PropelAuthMiddleware<S>;
 
@@ -68,12 +131,50 @@ impl<S> Layer<S> for PropelAuthLayer {
     }
 }
 
+#[cfg(feature = "axum06-extend-request")]
+#[derive(Clone)]
+pub struct PropelAuthMiddleware<S, E = NoopExtend> {
+    inner: S,
+    auth: Arc<PropelAuth>,
+    extender: E,
+}
+
+#[cfg(not(feature = "axum06-extend-request"))]
 #[derive(Clone)]
 pub struct PropelAuthMiddleware<S> {
     inner: S,
     auth: Arc<PropelAuth>,
 }
 
+#[cfg(feature = "axum06-extend-request")]
+impl<S, E> Service<Request<Body>> for PropelAuthMiddleware<S, E>
+where
+    S: Service<Request<Body>, Response = Response> + Send + 'static,
+    S::Future: Send + 'static,
+    E: ExtendRequest,
+{
+    type Response = S::Response;
+    type Error = S::Error;
+    type Future =
+        Pin<Box<dyn Future<Output = Result<Self::Response, Self::Error>> + Send + 'static>>;
+
+    fn poll_ready(&mut self, cx: &mut Context<'_>) -> Poll<Result<(), Self::Error>> {
+        self.inner.poll_ready(cx)
+    }
+
+    fn call(&mut self, mut request: Request<Body>) -> Self::Future {
+        let auth = self.auth.clone();
+        request.extensions_mut().insert(auth.clone());
+        self.extender.extend(&mut request, auth);
+        let future = self.inner.call(request);
+        Box::pin(async move {
+            let response: Response = future.await?;
+            Ok(response)
+        })
+    }
+}
+
+#[cfg(not(feature = "axum06-extend-request"))]
 impl<S> Service<Request<Body>> for PropelAuthMiddleware<S>
 where
     S: Service<Request<Body>, Response = Response> + Send + 'static,
