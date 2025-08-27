@@ -584,7 +584,7 @@ mod tests {
 
     fn get_token_service(
         token_verification_metadata: &AuthTokenVerificationMetadata,
-    ) -> TokenService {
+    ) -> TokenService<'_> {
         TokenService {
             token_verification_metadata,
             issuer: ISSUER,
