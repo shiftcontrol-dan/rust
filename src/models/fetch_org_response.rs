@@ -16,7 +16,6 @@ use schemars::JsonSchema;
 
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
 #[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
-#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct OrgMetadata {
     #[serde(flatten)]
     pub metadata: HashMap<String, Value>,
@@ -29,7 +28,6 @@ impl OrgMetadata {
 }
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 #[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct FetchOrgResponse {
     pub org_id: String,

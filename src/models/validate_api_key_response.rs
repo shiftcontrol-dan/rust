@@ -10,7 +10,6 @@ pub type OrgRole = String;
 
 #[derive(Clone, Debug, PartialEq, Serialize, Deserialize)]
 #[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
-#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct ValidateApiKeyResponse {
     pub metadata: Option<serde_json::Value>,
     pub user: Option<UserMetadata>,

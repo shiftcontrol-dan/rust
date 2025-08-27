@@ -3,8 +3,6 @@ use std::collections::HashMap;
 
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
-#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
-use schemars::JsonSchema;
 
 use crate::propelauth::errors::DetailedForbiddenError;
 use crate::propelauth::options::{RequiredOrg, UserRequirementsInOrg};
@@ -13,7 +11,6 @@ use crate::propelauth::options::{RequiredOrg, UserRequirementsInOrg};
 use schemars::JsonSchema;
 
 #[derive(Debug, Deserialize, Clone, PartialEq, Default)]
-#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 #[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
 pub struct LoginMethodForAccessToken {
     pub login_method: String,
