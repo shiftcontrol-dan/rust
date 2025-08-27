@@ -174,8 +174,6 @@ extern crate schemars09 as schemars;
 #[cfg(feature = "schemars-latest")]
 extern crate schemars as schemars;
 
-pub mod schema;
-
 pub mod apis;
 pub mod models;
 pub mod propelauth;
