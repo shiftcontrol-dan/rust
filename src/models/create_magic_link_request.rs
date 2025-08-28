@@ -13,7 +13,7 @@ use {
     std::convert::TryFrom,
     schemars09 as schemars,
 };
-#[cfg(any(feature = "schemars09", feature = "schemars-latest"))]
+#[cfg(any(feature = "schemars09", feature = "schemars1"))]
 use schemars::JsonSchema;
 #[cfg(feature = "schemars09")]
 use std::convert::TryFrom;
@@ -22,7 +22,7 @@ use std::collections::HashMap;
 
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
-#[cfg_attr(any(feature = "schemars09", feature = "schemars-latest"), derive(JsonSchema))]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct CreateMagicLinkRequest {
     #[serde(rename = "email")]
     pub email: String,
