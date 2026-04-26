@@ -4,7 +4,17 @@
   </a>
 </p>
 
-# PropelAuth Rust Library
+# PropelAuth Rust Library (schemars fork)
+
+> **This is a fork of [PropelAuth/rust](https://github.com/PropelAuth/rust)** that adds
+> [schemars](https://crates.io/crates/schemars) `JsonSchema` derives to the crate's
+> request/response types. This lets tools like [Aide](https://crates.io/crates/aide)
+> automatically generate OpenAPI documentation for Axum servers that use PropelAuth types.
+>
+> We keep this fork regularly synced with the upstream repository so you get the latest
+> PropelAuth features alongside the schemars support.
+
+---
 
 Add authentication and authorization to your application.
 
@@ -140,30 +150,34 @@ If you'd rather use a pure Rust TLS implementation rather than OpenSSL disable t
 propelauth = { version >= "0.12.1", features = ["rustls"], default-features = false }
 ```
 
-## JSON Schemas (schemars)
+## JSON Schemas (schemars) — why this fork exists
 
-This crate can optionally derive JSON Schemas for its request/response types using the schemars crate. This is useful if you want to automatically generate API documentation (e.g., OpenAPI) for endpoints that return or accept PropelAuth types, using libraries like aide.
+This fork's primary addition is optional `schemars::JsonSchema` derives on the crate's
+request/response types. This is what allows tools like
+[Aide](https://crates.io/crates/aide) to automatically generate OpenAPI documentation for
+Axum servers that accept or return PropelAuth types.
 
-There are two feature flags to support both the 0.9 and 1.x lines of schemars:
+Two feature flags cover both the 0.9 and 1.x lines of schemars:
 
-- schemars09 — enables schemars = 0.9.x compatibility
-- schemars-latest — enables schemars = 1.x compatibility
+| Feature flag | schemars version |
+|---|---|
+| `schemars09` | 0.9.x |
+| `schemars1` | 1.x |
 
-Only enable one of these features at a time.
-
-Enabling schemars in your Cargo.toml:
+Enable **one** of these at a time.
 
 ```toml
-# Choose one of the following feature flags
-propelauth = { version = "^0", features = ["schemars-latest"] }
-# or, if your project is still on schemars 0.9
-# propelauth = { version = "^0", features = ["schemars09"] }
+# schemars 1.x (recommended)
+propelauth = { version = "^0", features = ["schemars1"] }
+
+# or schemars 0.9.x
+propelauth = { version = "^0", features = ["schemars09"] }
 ```
 
-What you get when enabled:
-
-- The crate's data models (for example: User, UserInOrg, CreateMagicLinkRequest, CreateAccessTokenResponse, and many others) will derive schemars::JsonSchema behind the selected feature flag.
-- You can then use those types with OpenAPI generators that rely on schemars, such as aide, utoipa-with-schemars adapter, or custom schema generation code.
+When enabled, models like `User`, `UserInOrg`, `CreateMagicLinkRequest`,
+`CreateAccessTokenResponse`, and many others derive `JsonSchema`. You can then feed them
+into any OpenAPI generator that relies on schemars — Aide, a utoipa adapter, or your own
+schema generation code.
 
 ## Other
 
