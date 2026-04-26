@@ -15,44 +15,59 @@ use crate::models::{FetchUsersOrderBy, ResendEmailConfirmationRequest};
 use crate::propelauth::auth::AUTH_HOSTNAME_HEADER;
 use crate::{apis::ResponseContent, models::InviteUserToOrgRequest};
 
+#[cfg(feature = "schemars09")]
+use {
+    std::convert::TryFrom,
+    schemars09 as schemars,
+};
+#[cfg(any(feature = "schemars09", feature = "schemars1"))]
+use schemars::JsonSchema;
+
 /// struct for passing parameters to the method [`create_magic_link`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct CreateMagicLinkParams {
     pub create_magic_link_request: crate::models::CreateMagicLinkRequest,
 }
 
 /// struct for passing parameters to the method [`create_user`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct CreateUserParams {
     pub create_user_request: crate::models::CreateUserRequest,
 }
 
 /// struct for passing parameters to the method [`delete_user`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct DeleteUserParams {
     pub user_id: String,
 }
 
 /// struct for passing parameters to the method [`disable_user`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct DisableUserParams {
     pub user_id: String,
 }
 
 /// struct for passing parameters to the method [`disable_user2fa`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct DisableUser2faParams {
     pub user_id: String,
 }
 
 /// struct for passing parameters to the method [`enable_user`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct EnableUserParams {
     pub user_id: String,
 }
 
 /// struct for passing parameters to the method [`fetch_user_by_email`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUserByEmailParams {
     pub email: String,
     /// Defaults to false
@@ -61,6 +76,7 @@ pub struct FetchUserByEmailParams {
 
 /// struct for passing parameters to the method [`fetch_user_by_id`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUserByIdParams {
     pub user_id: String,
     /// Defaults to false
@@ -94,6 +110,7 @@ pub struct FetchFreshTokenFromProviderParams {
 
 /// struct for passing parameters to the method [`fetch_user_by_username`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUserByUsernameParams {
     pub username: String,
     /// Defaults to false
@@ -102,6 +119,7 @@ pub struct FetchUserByUsernameParams {
 
 /// struct for passing parameters to the method [`fetch_users_by_emails`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUsersByEmailsParams {
     pub emails_query: crate::models::EmailsQuery,
     /// Defaults to false
@@ -110,6 +128,7 @@ pub struct FetchUsersByEmailsParams {
 
 /// struct for passing parameters to the method [`fetch_users_by_ids`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUsersByIdsParams {
     pub user_ids_query: crate::models::UserIdsQuery,
     /// Defaults to false
@@ -118,6 +137,7 @@ pub struct FetchUsersByIdsParams {
 
 /// struct for passing parameters to the method [`fetch_users_by_query`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUsersByQueryParams {
     pub page_size: Option<i64>,
     pub page_number: Option<i64>,
@@ -129,6 +149,7 @@ pub struct FetchUsersByQueryParams {
 
 /// struct for passing parameters to the method [`fetch_users_by_usernames`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchUsersByUsernamesParams {
     pub usernames_query: crate::models::UsernamesQuery,
     /// Defaults to false
@@ -137,18 +158,21 @@ pub struct FetchUsersByUsernamesParams {
 
 /// struct for passing parameters to the method [`migrate_user`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct MigrateUserParams {
     pub migrate_user_request: crate::models::MigrateUserRequest,
 }
 
 /// struct for passing parameters to the method [`migrate_user_password`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct MigrateUserPasswordParams {
     pub migrate_user_password_request: crate::models::MigrateUserPasswordRequest,
 }
 
 /// struct for passing parameters to the method [`update_user_email`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct UpdateUserEmailParams {
     pub user_id: String,
     pub update_email_request: crate::models::UpdateEmailRequest,
@@ -156,6 +180,7 @@ pub struct UpdateUserEmailParams {
 
 /// struct for passing parameters to the method [`update_user_metadata`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct UpdateUserMetadataParams {
     pub user_id: String,
     pub update_metadata_request: crate::models::UpdateMetadataRequest,
@@ -163,6 +188,7 @@ pub struct UpdateUserMetadataParams {
 
 /// struct for passing parameters to the method [`update_user_password`]
 #[derive(Clone, Debug, Default)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct UpdateUserPasswordParams {
     pub user_id: String,
     pub update_password_request: crate::models::UpdatePasswordRequest,

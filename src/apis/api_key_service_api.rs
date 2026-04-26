@@ -11,8 +11,18 @@ use crate::{apis::ResponseContent, propelauth::auth::AUTH_HOSTNAME_HEADER};
 
 use super::{configuration, Error};
 
+#[cfg(feature = "schemars09")]
+use {
+    std::convert::TryFrom,
+    schemars09 as schemars,
+};
+#[cfg(any(feature = "schemars09", feature = "schemars1"))]
+use schemars::JsonSchema;
+
+
 /// struct for passing parameters to the method [`fetch_api_keys`, `fetch_archived_api_keys`]
 #[derive(Clone, Debug, Default, Serialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct ApiKeyQueryParams {
     pub user_id: Option<String>,
     pub user_email: Option<String>,
@@ -23,6 +33,7 @@ pub struct ApiKeyQueryParams {
 
 /// struct for passing parameters to the method [`create_api_key`]
 #[derive(Clone, Debug, Default, Serialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct CreateApiKeyParams {
     pub expires_at_seconds: Option<i64>,
     pub metadata: Option<serde_json::Value>,
@@ -44,6 +55,7 @@ pub struct ImportApiKeyParams {
 
 /// struct for passing parameters to the method [`update_api_key`]
 #[derive(Clone, Debug, Default, Serialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct UpdateApiKeyParams {
     pub expires_at_seconds: Option<i64>,
     pub metadata: Option<serde_json::Value>,
@@ -52,6 +64,7 @@ pub struct UpdateApiKeyParams {
 
 /// struct for passing parameters to the method [`validate_api_key`] and [`validate_imported_api_key`]
 #[derive(Clone, Debug, Default, Serialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct ValidateApiKeyParams {
     pub api_key_token: String,
 }

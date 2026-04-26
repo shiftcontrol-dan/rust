@@ -1,4 +1,13 @@
+#[cfg(feature = "schemars09")]
+use {
+    std::convert::TryFrom,
+    schemars09 as schemars,
+};
+#[cfg(any(feature = "schemars09", feature = "schemars1"))]
+use schemars::JsonSchema;
+
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct SubscribeOrgToRoleMappingRequest {
     #[serde(rename = "custom_role_mapping_name")]
     pub custom_role_mapping_name: String,

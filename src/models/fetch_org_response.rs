@@ -11,8 +11,16 @@
 use std::collections::HashMap;
 
 use serde_json::Value;
+#[cfg(feature = "schemars09")]
+use {
+    std::convert::TryFrom,
+    schemars09 as schemars,
+};
+#[cfg(any(feature = "schemars09", feature = "schemars1"))]
+use schemars::JsonSchema;
 
 #[derive(Debug, Clone, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct OrgMetadata {
     #[serde(flatten)]
     pub metadata: HashMap<String, Value>,
@@ -25,6 +33,7 @@ impl OrgMetadata {
 }
 
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchOrgResponse {
     pub org_id: String,
     pub name: String,
@@ -89,6 +98,7 @@ impl FetchOrgResponse {
 
 // A Simple org response is used for fetching multiple orgs until that API returns a full org object
 #[derive(Clone, Debug, PartialEq, Default, Serialize, Deserialize)]
+#[cfg_attr(any(feature = "schemars09", feature = "schemars1"), derive(JsonSchema))]
 pub struct FetchOrgBasicResponse {
     pub org_id: String,
     pub name: String,

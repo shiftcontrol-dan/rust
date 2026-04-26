@@ -4,7 +4,17 @@
   </a>
 </p>
 
-# PropelAuth Rust Library
+# PropelAuth Rust Library (schemars fork)
+
+> **This is a fork of [PropelAuth/rust](https://github.com/PropelAuth/rust)** that adds
+> [schemars](https://crates.io/crates/schemars) `JsonSchema` derives to the crate's
+> request/response types. This lets tools like [Aide](https://crates.io/crates/aide)
+> automatically generate OpenAPI documentation for Axum servers that use PropelAuth types.
+>
+> We keep this fork regularly synced with the upstream repository so you get the latest
+> PropelAuth features alongside the schemars support.
+
+---
 
 Add authentication and authorization to your application.
 
@@ -139,6 +149,35 @@ If you'd rather use a pure Rust TLS implementation rather than OpenSSL disable t
 ```toml
 propelauth = { version >= "0.12.1", features = ["rustls"], default-features = false }
 ```
+
+## JSON Schemas (schemars) — why this fork exists
+
+This fork's primary addition is optional `schemars::JsonSchema` derives on the crate's
+request/response types. This is what allows tools like
+[Aide](https://crates.io/crates/aide) to automatically generate OpenAPI documentation for
+Axum servers that accept or return PropelAuth types.
+
+Two feature flags cover both the 0.9 and 1.x lines of schemars:
+
+| Feature flag | schemars version |
+|---|---|
+| `schemars09` | 0.9.x |
+| `schemars1` | 1.x |
+
+Enable **one** of these at a time.
+
+```toml
+# schemars 1.x (recommended)
+propelauth = { version = "^0", features = ["schemars1"] }
+
+# or schemars 0.9.x
+propelauth = { version = "^0", features = ["schemars09"] }
+```
+
+When enabled, models like `User`, `UserInOrg`, `CreateMagicLinkRequest`,
+`CreateAccessTokenResponse`, and many others derive `JsonSchema`. You can then feed them
+into any OpenAPI generator that relies on schemars — Aide, a utoipa adapter, or your own
+schema generation code.
 
 ## Other
 
