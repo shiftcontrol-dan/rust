@@ -36,6 +36,7 @@ default-features = false
 
 [dev-dependencies]
 openssl = "0.10.78"
+tokio = { version = "1", features = ["macros", "rt"] }
 
 [features]
 default = ["reqwest/default", "__reqwest"]
