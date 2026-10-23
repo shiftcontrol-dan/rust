@@ -15,8 +15,6 @@ use {
 };
 #[cfg(any(feature = "schemars09", feature = "schemars1"))]
 use schemars::JsonSchema;
-#[cfg(feature = "schemars09")]
-use std::convert::TryFrom;
 use std::collections::HashMap;
 
 
