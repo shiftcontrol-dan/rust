@@ -1,6 +1,6 @@
 [package]
 name = "propelauth"
-version = "0.23.7"
+version = "0.23.8"
 authors = ["support@propelauth.com"]
 description = "A Rust crate for managing authentication and authorization with support for multi-tenant / B2B products, powered by PropelAuth"
 keywords = ["authentication", "auth", "authorization", "b2b", "tenant"]
@@ -16,7 +16,7 @@ axum_06 = { package = "axum", version = "^0.6", optional = true }
 axum_07 = { package = "axum", version = "^0.7", optional = true }
 axum_08 = { package = "axum", version = "^0.8", optional = true }
 chrono = "0.4.44"
-jsonwebtoken = { version = "10.3.0", features = ["rust_crypto"] }
+jsonwebtoken = { version = "10.3.0", features = ["aws_lc_rs"] }
 serde = "^1.0"
 serde_derive = "^1.0"
 serde_json = "^1.0"
