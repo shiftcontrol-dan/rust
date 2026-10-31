@@ -1,6 +1,6 @@
 [package]
 name = "propelauth"
-version = "0.24.1"
+version = "0.24.2"
 authors = ["support@propelauth.com"]
 description = "A Rust crate for managing authentication and authorization with support for multi-tenant / B2B products, powered by PropelAuth"
 keywords = ["authentication", "auth", "authorization", "b2b", "tenant"]
@@ -48,6 +48,8 @@ actix4 = ["dep:actix-web"]
 __reqwest = ["reqwest/json", "reqwest/multipart", "reqwest/query"]
 schemars09 = ["dep:schemars09"]
 schemars1 = ["dep:schemars"]
+# Test only: PropelAuth::init and fetch_and_init read test_support::set_base_url and panic when unset.
+test-support = []
 
 [lib]
 doctest = false

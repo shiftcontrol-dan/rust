@@ -16,8 +16,20 @@ use crate::propelauth::user::UserService;
 use crate::propelauth::scim::ScimService;
 use crate::propelauth::user_insights::UserInsightsService;
 
+#[cfg(not(feature = "test-support"))]
 static BACKEND_API_BASE_URL: &str = "https://propelauth-api.com";
 pub(crate) static AUTH_HOSTNAME_HEADER: &str = "X-Propelauth-url";
+
+#[cfg(not(feature = "test-support"))]
+fn backend_api_base_url() -> String {
+    BACKEND_API_BASE_URL.to_string()
+}
+
+/// With the `test-support` feature, the URL set by `test_support::set_base_url`.
+#[cfg(feature = "test-support")]
+fn backend_api_base_url() -> String {
+    crate::test_support::base_url_or_panic()
+}
 
 /// The main entrypoint of this library.
 /// All authentication, authorization and API requests starts from this struct
@@ -36,7 +48,7 @@ impl PropelAuth {
         let issuer = "https://".to_string() + &auth_hostname;
 
         let configuration = Configuration {
-            base_path: BACKEND_API_BASE_URL.to_string(),
+            base_path: backend_api_base_url(),
             auth_hostname,
             bearer_access_token: Some(opts.api_key),
             ..Default::default()
@@ -56,7 +68,7 @@ impl PropelAuth {
         let issuer = "https://".to_string() + &auth_hostname;
 
         let configuration = Configuration {
-            base_path: BACKEND_API_BASE_URL.to_string(),
+            base_path: backend_api_base_url(),
             auth_hostname,
             bearer_access_token: Some(opts.api_key),
             ..Default::default()
@@ -186,5 +198,103 @@ mod tests {
             Some("app.blah.co.uk".to_string()),
             validate_auth_url_extract_hostname("https://app.blah.co.uk/more").ok()
         );
+    }
+}
+
+#[cfg(all(test, feature = "test-support"))]
+mod test_support_tests {
+    use super::PropelAuth;
+    use crate::models::AuthTokenVerificationMetadata;
+    use crate::propelauth::errors::InitializationError;
+    use crate::propelauth::options::{AuthOptions, AuthOptionsWithTokenVerification};
+    use crate::test_support::{clear_base_url, set_base_url, test_lock};
+    use std::io::{Read, Write};
+    use std::net::TcpListener;
+    use std::sync::mpsc;
+    use std::thread;
+    use std::time::Duration;
+
+    const AUTH_URL: &str = "https://auth.example.com";
+
+    fn init_options() -> AuthOptionsWithTokenVerification {
+        AuthOptionsWithTokenVerification {
+            auth_url: AUTH_URL.to_string(),
+            api_key: "api-key".to_string(),
+            manual_token_verification_metadata: AuthTokenVerificationMetadata::default(),
+        }
+    }
+
+    #[test]
+    fn init_uses_the_override() {
+        let _lock = test_lock();
+        set_base_url("http://127.0.0.1:9");
+        let auth = PropelAuth::init(init_options()).unwrap();
+        clear_base_url();
+        assert_eq!(auth.config.base_path, "http://127.0.0.1:9");
+    }
+
+    #[test]
+    #[should_panic(expected = "must call propelauth::test_support::set_base_url")]
+    fn init_panics_when_no_override_is_set() {
+        let _lock = test_lock();
+        clear_base_url();
+        let _ = PropelAuth::init(init_options());
+    }
+
+    #[test]
+    #[should_panic(expected = "must call propelauth::test_support::set_base_url")]
+    fn fetch_and_init_panics_when_no_override_is_set() {
+        let _lock = test_lock();
+        clear_base_url();
+        let options = AuthOptions {
+            auth_url: AUTH_URL.to_string(),
+            api_key: "api-key".to_string(),
+        };
+        let _ = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(PropelAuth::fetch_and_init(options));
+    }
+
+    #[test]
+    fn fetch_and_init_requests_the_override_server() {
+        let _lock = test_lock();
+        let listener = TcpListener::bind("127.0.0.1:0").unwrap();
+        let address = listener.local_addr().unwrap();
+        let (request_line, received) = mpsc::channel();
+        thread::spawn(move || {
+            let (mut stream, _) = listener.accept().unwrap();
+            let mut buffer = [0u8; 4096];
+            let read = stream.read(&mut buffer).unwrap();
+            stream
+                .write_all(
+                    b"HTTP/1.1 401 Unauthorized\r\ncontent-length: 0\r\nconnection: close\r\n\r\n",
+                )
+                .unwrap();
+            let request = String::from_utf8_lossy(&buffer[..read]).to_string();
+            let first_line = request.lines().next().unwrap_or_default().to_string();
+            request_line.send(first_line).unwrap();
+        });
+        set_base_url(format!("http://{}", address));
+
+        let options = AuthOptions {
+            auth_url: AUTH_URL.to_string(),
+            api_key: "api-key".to_string(),
+        };
+        let result = tokio::runtime::Builder::new_current_thread()
+            .enable_all()
+            .build()
+            .unwrap()
+            .block_on(PropelAuth::fetch_and_init(options));
+        clear_base_url();
+
+        assert_eq!(
+            received
+                .recv_timeout(Duration::from_secs(10))
+                .expect("the override server received no request"),
+            "GET /api/backend/v1/token_verification_metadata HTTP/1.1"
+        );
+        assert_eq!(result.err(), Some(InitializationError::InvalidApiKey));
     }
 }
