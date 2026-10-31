@@ -179,6 +179,20 @@ When enabled, models like `User`, `UserInOrg`, `CreateMagicLinkRequest`,
 into any OpenAPI generator that relies on schemars — Aide, a utoipa adapter, or your own
 schema generation code.
 
+## Testing against a local server (fork only)
+
+Enable the `test-support` feature in `[dev-dependencies]` only. With it on,
+`PropelAuth::init` and `PropelAuth::fetch_and_init` use the URL set by
+`propelauth::test_support::set_base_url` instead of `https://propelauth-api.com`, and
+panic when no URL is set, so a test cannot call PropelAuth by accident. The URL is read
+when `init` or `fetch_and_init` runs, and it is process-wide, so serialize tests that set
+different URLs.
+
+```rust
+propelauth::test_support::set_base_url(mock_server_uri);
+let auth = PropelAuth::init(options)?;
+```
+
 ## Other
 
 After initializing `auth`, you can verify [access tokens](https://docs.propelauth.com/guides-and-examples/guides/access-tokens) by passing in the Authorization header (formatted `Bearer TOKEN`):
