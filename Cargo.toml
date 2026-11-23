@@ -51,5 +51,8 @@ schemars1 = ["dep:schemars"]
 # Test only: PropelAuth::init and fetch_and_init read test_support::set_base_url and panic when unset.
 test-support = []
 
+[package.metadata.docs.rs]
+all-features = true
+
 [lib]
 doctest = false
